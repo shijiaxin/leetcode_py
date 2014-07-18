@@ -5,25 +5,39 @@ class Solution:
 		if(len(ratings)<2):
 			return len(ratings);
 		length=len(ratings);
-		result=[1]*length;
+		v_array=[1]*length;
+		l_array=[1]*length;
+		result=[(1,1)]*length;#(value,decrease length)
 		pos=1;
 		while(pos<length):
 			if(ratings[pos]>ratings[pos-1]):
-				result[pos]=result[pos-1]+1;
+				v_array[pos]=v_array[pos-1]+1;
 				pos+=1;
 				continue;
 			if(ratings[pos]==ratings[pos-1]):
 				pos+=1;
 				continue;
-			p=pos-1;
-			while(p>=0):
-				if(ratings[p]>ratings[p+1] and result[p]==result[p+1]):
-					result[p]=result[p+1]+1;
-					p-=1;
+			prev=pos-l_array[pos];
+			while(prev>=0):
+				if(ratings[prev]>ratings[prev+1] and v_array[prev]==pos-prev):
+					l_array[pos]+=l_array[prev];
+					v_array[prev]=-1;
 				else:
 					break;
+				prev=pos-l_array[pos];
 			pos+=1;
-		return sum(result);
+		candy=0;
+		pos=0;
+		while(pos<len(result)):
+			if(v_array[pos]==-1):
+				pos+=1;
+			else:
+				m=v_array[pos];
+				l=l_array[pos];
+				candy+=(m+m+l-1)*l/2;
+				pos+=1;
+		return candy;
 
 s=Solution();
-print s.candy([1,2,3,4,3,2,3,4,5,2,3,3,3,1,5,2]);
+print s.candy([2,1,2,3,5,4,3,2,1]);
+#print s.candy([1,2,3,4,3,2,3,4,5,2,3,3,3,1,5,2]);
