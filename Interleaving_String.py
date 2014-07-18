@@ -1,33 +1,35 @@
 class Solution:
-	def check(self,arr,s1,i1,s2,i2,s3):
-		if(i1==len(s1) and i2==len(s2)):
-			return True;
-		if(arr[i1][i2]==1):
-			return True;
-		if(arr[i1][i2]==-1):
-			return False;
-		if(i1<len(s1) and s1[i1]==s3[i1+i2]):
-			check1=self.check(arr,s1,i1+1,s2,i2,s3);
-			if check1:
-				arr[i1][i2]=1;
-				return True;
-		if(i2<len(s2) and s2[i2]==s3[i1+i2]):
-			check2=self.check(arr,s1,i1,s2,i2+1,s3);
-			if check2:
-				arr[i1][i2]=1;
-				return True;
-		arr[i1][i2]=-1;
-		return False;
 	# @return a boolean
 	def isInterleave(self, s1, s2, s3):
 		if(len(s1)+len(s2) !=len(s3)):
 			return False;
-		arr=[0]*(1+len(s2));
-		arr=[arr]*(1+len(s1));
-		a= self.check(arr,s1,0,s2,0,s3);
-		print arr;
-		return a;
+		arr=[[]]*(1+len(s1));
+		for i in range (1+len(s1)):
+			arr[i]=[0]*(1+len(s2));
+		arr[0][0]=1;
+		pos=1;
+		while(pos<=len(s1)):
+			if(s1[pos-1]==s3[pos-1]):
+				arr[pos][0]=1;
+			else:
+				break;
+			pos+=1;
+		pos=1;
+		while(pos<=len(s2)):
+			if(s2[pos-1]==s3[pos-1]):
+				arr[0][pos]=1;
+			else:
+				break;
+			pos+=1;
+		for i in range(1,len(s1)+1):
+			for j in range(1,len(s2)+1):
+				if s1[i-1]==s3[i+j-1] and arr[i-1][j]==1 :
+					arr[i][j]=1;
+				if s2[j-1]==s3[i+j-1] and arr[i][j-1]==1 :
+					arr[i][j]=1;
+		return arr[len(s1)][len(s2)]==1;
 s=Solution();
+print s.isInterleave("a","","c");
 print s.isInterleave("aabd","abdc","aabdabcd");
-#print s.isInterleave("aabcc","dbbca","aadbbcbcac");
-#print s.isInterleave("aabcc","dbbca","aadbbbaccc");
+print s.isInterleave("aabcc","dbbca","aadbbcbcac");
+print s.isInterleave("aabcc","dbbca","aadbbbaccc");
