@@ -44,8 +44,26 @@ def build_tree(str):
 			break;
 	return data[0];
 
-
-
+class ListNode:
+	def __init__(self, x):
+		self.val = x
+		self.next = None
+def build_list(py_list):
+	if(py_list==[]):
+		return None;
+	start=ListNode(py_list[0]);
+	last=start;
+	for i in range(1,len(py_list)):
+		last.next=ListNode(py_list[i]);
+		last=last.next;
+	return start;
+def print_list(listnode):
+	result=[];
+	while(listnode!=None):
+		result.append(listnode.val);
+		listnode=listnode.next;
+	print result;
+	return result;
 
 
 
