@@ -6,21 +6,26 @@ class Solution:
 		if(head==None):
 			return None;
 		result=head;
-		head=head.next;
-		result.next=None;
-		while(head!=None):
-			current=head;
-			head=head.next;
-			current.next=None;
-			if(current.val<result.val):
-				current.next=result;
-				result=current;
+		p1=head;
+		while(True):
+			# from start to p1 ,it's a sorted List
+			p2=p1.next;
+			if(p2==None):
+				break;
+			if(p2.val>=p1.val):
+				p1=p2;
+				continue;
+			# insert p2 to the old list
+			p1.next=p2.next;
+			if(p2.val<result.val):
+				p2.next=result;
+				result=p2;
 			else:
 				pointer=result;
-				while(pointer.next!=None and pointer.next.val<current.val):
+				while(pointer.next.val<p2.val):
 					pointer=pointer.next;
-				current.next=pointer.next;
-				pointer.next=current;
+				p2.next=pointer.next;
+				pointer.next=p2;
 		return result;
 s=Solution();
 COMMON.print_list(s.insertionSortList(COMMON.build_list([1,5,2,4,3])));
